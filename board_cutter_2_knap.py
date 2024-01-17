@@ -1,8 +1,11 @@
 """Solve a multiple knapsack problem using a MIP solver."""
 from ortools.linear_solver import pywraplp
 
+def input_board_sizes():
+    #return [int(input("What is the length of the first size of lumber: ")), int(input("What is the length of the second size of lumber: ")), int(input("What is the length of the third size of lumber: "))] 
+    return 8 * [144] + [72] + [96]
 
-def main():
+def create_data_model(lumber_sizes):
     data = {}
     data["weights"] = [45, 45, 45, 45, 66, 66, 66, 66, 66, 66, 66, 66, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 12, 11, 55, 29, 50, 49]
     print("total linear feet: ", sum(data["weights"]))
@@ -14,18 +17,22 @@ def main():
 
     """figure out the total linear feet of lumber required -- then figure out how many boards of each size are needed... start trying the problem until we pack a value of sum(data["values"]) into the bins])"""
 
-    data["bin_capacities"] = 8 * [144] + [72] + [96]
+    data["bin_capacities"] = lumber_sizes
     data["num_bins"] = len(data["bin_capacities"])
     data["all_bins"] = range(data["num_bins"])
 
     # Create the mip solver with the SCIP backend.
+    
+    return data
+
+def create_solver():
     solver = pywraplp.Solver.CreateSolver("SCIP")
     if solver is None:
         print("SCIP solver unavailable.")
-        return
+        return solver
+    return solver
 
-    # Variables.
-    # x[i, b] = 1 if item i is packed in bin b.
+def optimize(data, solver):
     x = {}
     for i in data["all_items"]:
         for b in data["all_bins"]:
@@ -77,6 +84,18 @@ def main():
         print(f"Total value: {total_value}")
     else:
         print("The problem does not have an optimal solution.")
+
+def main():
+    
+    lumber = input_board_sizes()  
+
+    data = create_data_model(lumber)
+    solver = create_solver()
+    optimize(data, solver)
+    
+    # Variables.
+    # x[i, b] = 1 if item i is packed in bin b.
+    
 
 
 if __name__ == "__main__":
