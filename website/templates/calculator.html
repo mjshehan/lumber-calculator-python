@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Calcualtor{% endblock %}
+{% block content %}
+{{text}}
+{% if boolean == True %}
+Yes it is true!
+{% endif %}
+<form method="POST">
+    <h3 align="center">The Amazing Lumber Calculator</h3>
+    <div class="form-group">
+        <p>Enter the length of an available size of raw lumber in feet</p>
+        <input type="text" name="raw_lumber_length_1" id="raw_lumber_length_1" placeholder="eg 12 feet" />
+    </div>
+    <div class="form-group">
+        <br>
+        <p>Enter a second available lumber size</p>
+        <input type="text" name="raw_lumber_length_2" id="raw_lumber_length_2" placeholder="eg 10 feet" />
+    </div>
+    <div class="form-group">
+        <br>
+        <p>Enter a third available lumber size</p>
+        <input type="text" name="raw_lumber_length_3" id="raw_lumber_length_3" placeholder="eg 8 feet" />
+    </div>
+    <div class="form-group">
+        <br>
+        <p>Enter the size of each CUT PIECE required in inches (separated by a comma ,) </p>
+        <input type="text" name="piece_list" id="piece_list" placeholder="separate values by comma ," />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>    
+</form>
+{% endblock %}
