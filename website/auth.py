@@ -13,7 +13,7 @@ def logout():
     return "<p>Logout</p>"
 
 @auth.route('/calc', methods = ['GET', 'POST'])
-def sign_up():
+def calculator(): 
     data = None
     if request.method == 'POST': 
         #add checks for valid input
@@ -21,8 +21,15 @@ def sign_up():
         size_1 = int(request.form.get("raw_lumber_length_1"))
         size_2 = int(request.form.get("raw_lumber_length_2"))
         size_3 = int(request.form.get("raw_lumber_length_3"))
-        piece_list = request.form.get("piece_list")
-        print("SUBMIT WAS DEPRESSED")
-        print(size_1, size_2, size_3, piece_list)
+        piece_list = (request.form.get("piece_list")).replace(" ", ",").split(",")
+        print("SUBMIT WAS DEPRESSED -- let's cheer it up")
+        print( request.form.get("piece_list"))
+        print(type(piece_list), piece_list)
+
+        #convert piece list
+        #call board_cutter_2_knap.py
+        #store data
+        #render template with data
+
     return render_template("calculator.html", text="Testing Calculator Text", boolean=True)        
 
