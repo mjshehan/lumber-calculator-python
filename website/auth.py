@@ -43,7 +43,7 @@ def calculator():
         #convert piece list
         #call board_cutter_2_knap.py
         #store data
-        #render template with data
+        #render template with data...
 
     return render_template("calculator.html", text="Testing Calculator Text", boolean=True)        
 
