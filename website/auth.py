@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request 
+from board_cutter_2_knap import calculate
 
 auth = Blueprint('auth', __name__)
 
@@ -32,7 +33,7 @@ def calculator():
     
     if request.method == 'POST': 
         #add checks for valid input
-        #flesh messages as needed 
+        #flsh messages as needed 
         size_1 = int(request.form.get("raw_lumber_length_1"))
         size_2 = int(request.form.get("raw_lumber_length_2"))
         size_3 = int(request.form.get("raw_lumber_length_3"))
@@ -40,10 +41,19 @@ def calculator():
         print("SUBMIT WAS DEPRESSED -- let's cheer it up")
         print(type(piece_list), piece_list, type(piece_list[0]))
         print(piece_list)
-        #convert piece list
-        #call board_cutter_2_knap.py
+        lumber = [12*size_1, 12*size_2, 12*size_3]
+        
+        solution_df = calculate(lumber, piece_list)
+        print(solution_df)
+        table = solution_df.to_html()
+        print("Lumber options = ", lumber, "Piece List = ", piece_list)
+        print()
+        #---CHECK---convert piece list 
+        #---CHECK---call board_cutter_2_knap.py
         #store data
         #render template with data...
+    else:
+        table = ""
 
-    return render_template("calculator.html", text="Testing Calculator Text", boolean=True)        
+    return render_template("calculator.html", table=table, text="Testing Calculator Text", boolean=True)        
 

@@ -3,15 +3,17 @@ from ortools.linear_solver import pywraplp
 import math
 from itertools import combinations_with_replacement
 from combo_test import *
+from collections import namedtuple
+import pandas as pd
 
 def input_board_sizes():
     #return [int(input("What is the length of the first size of lumber: ")), int(input("What is the length of the second size of lumber: ")), int(input("What is the length of the third size of lumber: "))] 
     return 8 * [144] + [72] + [96]
 
-def permute_lumber_sizes(cut_pieces):
-    size_1 = 72
-    size_2 = 96
-    size_3 = 144
+def permute_lumber_sizes(lumber, cut_pieces):
+    size_1 = lumber[0]
+    size_2 = lumber[1]
+    size_3 = lumber[2]
     total_linear = sum(cut_pieces)
     lumber_sizes = [size_1, size_2, size_3]
     max =  math.ceil(total_linear * 1.3 / size_1) #find the max number of raw boards to perute
@@ -92,19 +94,29 @@ def optimize(data, solver):
         total_weight = 0
         total_value = 0
 
-        return_list = []
+        return_list = [] #should be a list of tuples
 
+        df = pd.DataFrame(columns=['bin', 'capacity', 'cut'])
+
+        cuts = []
+       
         for b in data["all_bins"]:
-            print(f"Bin {b} capacity: {data['bin_capacities'][b]}")
+            print(f"Lumber {b} capacity: {data['bin_capacities'][b]}")
             bin_weight = 0
             bin_value = 0
             for i in data["all_items"]:
                 if x[i, b].solution_value() > 0:
-                    print(
-                        f"Item {i} weight: {data['weights'][i]} value: {data['values'][i]}"
-                    )
-                    return_tup = (data["weights"][i], data["values"][i])
-                    return_list.append(return_list)
+                    #print(
+                    #    f"Item {i} weight: {data['weights'][i]} value: {data['values'][i]}"
+                    #)
+                    #return_tup = (b, data['bin_capacities'][b], data["weights"][i])
+                    #return_list.append(return_tup)
+                    #for_dataframe = pd.DataFrame(b, data['bin_capacities'][b], data["weights"][i])
+                    #df = pd.concat(for_dataframe, ignore_index=True)
+                    new_df = pd.DataFrame(columns=['bin', 'capacity', 'cut'])
+                    new_df.loc[0] = [b, data['bin_capacities'][b], data["weights"][i]]
+                    #return_list.append(return_list)
+                    df = pd.concat([df, new_df], ignore_index=True)
                     bin_weight += data["weights"][i]
                     bin_value += data["values"][i]
             print(f"Packed bin weight: {bin_weight}")
@@ -113,14 +125,31 @@ def optimize(data, solver):
             total_value += bin_value
         print(f"Total packed weight: {total_weight}")
         print(f"Total value: {total_value}")
-        
+        #print("here is the df----------------------->>>>>>>>>>>> ", df)
         if total_value == len(data["weights"]):
-            return return_tup
+            
+            return df
         else: 
             return None
     else:
         print("The problem does not have an optimal solution.")
 
+
+def calculate(lumber, cut_pieces):
+    
+    test_boards = permute_lumber_sizes(lumber, cut_pieces)
+    found_solution = None
+
+    for board_permute in test_boards:
+        if found_solution is None:
+            data = create_data_model(cut_pieces, board_permute)
+            solver = create_solver()
+            found_solution = optimize(data, solver)
+        else:
+            break
+
+    #print("solved -------------------------\n", found_solution)
+    return found_solution
 def main():
     
     lumber = input_board_sizes()  
