@@ -126,9 +126,39 @@ def optimize(data, solver):
         print(f"Total packed weight: {total_weight}")
         print(f"Total value: {total_value}")
         #print("here is the df----------------------->>>>>>>>>>>> ", df)
+        
+        
+        ####################
+        grouped_df = df.groupby('bin').agg(
+            {'capacity': 'first',  # get the first capacity value in each group
+             'cut': ['sum', list]  # sum the cut values in each group
+            }).reset_index()
+
+        # calculate the waste for each bin
+        #grouped_df['waste'] = grouped_df['capacity'] - grouped_df['cut']
+        
+        # rename the 'cut' column to 'total_used'
+        grouped_df.columns = grouped_df.columns.get_level_values(0)
+        grouped_df.columns.values[0] = 'bin'
+        grouped_df.columns.values[0] = 'bin'
+        grouped_df.columns.values[1] = 'lumber length'
+        grouped_df.columns.values[2] = 'inches used'
+        grouped_df.columns.values[3] = 'cuts'
+        grouped_df['waste'] = grouped_df['lumber length'] - grouped_df['inches used']
+
+
+
+
+        #grouped_df.rename(columns={'capacity': 'BOARD LENGTH', 'sum': 'USED', 'cut': 'CUT LIST'}, inplace=True)
+        
+        
+        
+        print("GROUP DF........\n", grouped_df)
+        ####################
+
         if total_value == len(data["weights"]):
             
-            return df
+            return grouped_df
         else: 
             return None
     else:

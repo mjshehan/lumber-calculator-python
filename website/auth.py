@@ -18,6 +18,7 @@ def logout():
 
 def calculator(): 
     data = None
+    text = "Welcome!"
     def hello():
         print("hello world")
 
@@ -52,8 +53,12 @@ def calculator():
         #---CHECK---call board_cutter_2_knap.py
         #store data
         #render template with data...
+        #grouped_df = pd.DataFrame(solution_df.groupby(["bin"]))
+        #print(grouped_df)
+  
+      
     else:
         table = ""
 
-    return render_template("calculator.html", table=table, text="Testing Calculator Text", boolean=True)        
+    return render_template("calculator.html", table=table, boolean=True)        
 

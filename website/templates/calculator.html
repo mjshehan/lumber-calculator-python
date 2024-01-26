@@ -2,9 +2,7 @@
 {% block title %}Calcualtor{% endblock %}
 {% block content %}
 {{text}}
-{% if boolean == True %}
-Yes it is true!
-{% endif %}
+{% if table == "" %}
 <form method="POST">
     <h3 align="center">The Amazing Lumber Calculator</h3>
     <div class="form-group">
@@ -29,5 +27,11 @@ Yes it is true!
     <br />
     <button type="submit" class="btn btn-primary">Submit</button>    
 </form>
+{% else %}
+<p>Good news, we have a solution for you:</p>
+
 {{table|safe}}
+<br />
+<a href="" class="btn btn-info">Reset</a> 
+{% endif %}
 {% endblock %}
