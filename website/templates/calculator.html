@@ -29,8 +29,12 @@
 </form>
 {% else %}
 <p>Good news, we have a solution for you:</p>
+<br />
 
 {{table|safe}}
+<br />
+<br />
+<img src="{{ url_for('static', filename='visual.png') }}" alt="My Plot"> 
 <br />
 <a href="" class="btn btn-info">Reset</a> 
 {% endif %}

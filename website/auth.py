@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash 
 from board_cutter_2_knap import calculate
+from make_visual import make_visual
 import matplotlib.pyplot as pltp
 
 auth = Blueprint('auth', __name__)
@@ -73,6 +74,7 @@ def calculator():
         solution_df = calculate(lumber, piece_list)
         print(solution_df)
         table = solution_df.to_html()
+        make_visual(solution_df)
         print("Lumber options = ", lumber, "Piece List = ", piece_list)
         print()
         #---CHECK---convert piece list 
