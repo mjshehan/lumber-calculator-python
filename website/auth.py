@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash 
 from board_cutter_2_knap import calculate
+import matplotlib.pyplot as pltp
 
 auth = Blueprint('auth', __name__)
 
