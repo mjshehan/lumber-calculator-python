@@ -16,5 +16,5 @@ df = pd.DataFrame({
     'Cuts': [[5, 10, 20], [5, 10, 20], [5, 10, 20]]
     })
 
-df['Cuts'] = df['Cuts'].apply(sum_list)
+
 
