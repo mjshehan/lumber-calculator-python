@@ -5,6 +5,8 @@ from itertools import combinations_with_replacement
 from combo_test import *
 from collections import namedtuple
 import pandas as pd
+import time
+
 
 def input_board_sizes():
     #return [int(input("What is the length of the first size of lumber: ")), int(input("What is the length of the second size of lumber: ")), int(input("What is the length of the third size of lumber: "))] 
@@ -88,13 +90,14 @@ def optimize(data, solver):
 
     print(f"Solving with {solver.SolverVersion()}")
     status = solver.Solve()
-
+    print("test line")
+    if status is not pywraplp.Solver.OPTIMAL:
+        print('here we are baby --------------------')
+        return False
     if status == pywraplp.Solver.OPTIMAL:
         print(f"Total packed value: {objective.Value()}")
         total_weight = 0
         total_value = 0
-
-        return_list = [] #should be a list of tuples
 
         df = pd.DataFrame(columns=['bin', 'capacity', 'cut'])
 
@@ -106,16 +109,8 @@ def optimize(data, solver):
             bin_value = 0
             for i in data["all_items"]:
                 if x[i, b].solution_value() > 0:
-                    #print(
-                    #    f"Item {i} weight: {data['weights'][i]} value: {data['values'][i]}"
-                    #)
-                    #return_tup = (b, data['bin_capacities'][b], data["weights"][i])
-                    #return_list.append(return_tup)
-                    #for_dataframe = pd.DataFrame(b, data['bin_capacities'][b], data["weights"][i])
-                    #df = pd.concat(for_dataframe, ignore_index=True)
                     new_df = pd.DataFrame(columns=['bin', 'capacity', 'cut'])
                     new_df.loc[0] = [b, data['bin_capacities'][b], data["weights"][i]]
-                    #return_list.append(return_list)
                     df = pd.concat([df, new_df], ignore_index=True)
                     bin_weight += data["weights"][i]
                     bin_value += data["values"][i]
@@ -167,33 +162,31 @@ def optimize(data, solver):
 
 
 def calculate(lumber, cut_pieces):
-    
+
+    start_time = time.time() 
+    timeout = 3 
+
     test_boards = permute_lumber_sizes(lumber, cut_pieces)
     found_solution = None
 
     for board_permute in test_boards:
+        iter_time = time.time()
         solver = create_solver()
+        solver.SetTimeLimit(3000)
         data = create_data_model(cut_pieces, board_permute)
         found_solution = optimize(data, solver)
-        print("---- ------ ----\n", found_solution)
+        if found_solution is False:
+            continue
+        
         print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
         print("len: ", len(cut_pieces))
-
+        
         if found_solution is not None and sum(sum(sublist) for sublist in found_solution['cuts']) == sum(cut_pieces):   
             break
 
-    
-
-
-        
-        """if found_solution is None:
-            data = create_data_model(cut_pieces, board_permute)
-            solver = create_solver()
-            found_solution = optimize(data, solver)
-        else:
-            break"""
-
     #print("solved -------------------------\n", found_solution)
+    print("ELAPSED TIME------------------", time.time()-start_time)
+    print("Time for iteration...." , time.time() - iter_time)
     return found_solution
 def main():
     
