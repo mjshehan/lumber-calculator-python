@@ -21,6 +21,8 @@ def logout():
 def calculator(): 
     data = None
     text = "Welcome!"
+    text2 = ""
+    text3 = ""
     def hello():
         print("hello world")
 
@@ -74,6 +76,11 @@ def calculator():
 
         print("SOLLLLUTION!!!!!  -----------------> ", solution_df)
         table = solution_df.to_html()
+        total_waste = sum(solution_df['waste'])
+        total_needed = sum(piece_list)
+        text2 = f"Total Waste = " + str(total_waste) + " inches" 
+        text3 = f"Percent Waste = " + str(round(total_waste/total_needed*100, 2)) + "%"
+        print(text2, "<------------------------------")
         make_visual(solution_df) ####uncoment for VISUALS!
         print("Lumber options = ", lumber, "Piece List = ", piece_list)
         print()
@@ -88,5 +95,5 @@ def calculator():
     else:
         table = ""
 
-    return render_template("calculator.html", table=table, boolean=True)        
+    return render_template("calculator.html", text2=text2, text3=text3, table=table, boolean=True)        
 

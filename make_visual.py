@@ -15,7 +15,7 @@ def sum_list(ls):
     return(ls)
 
 def make_visual(df):
-    print(df)
+    plt.clf()
     
     df1 = df
     df = pd.DataFrame({
@@ -24,6 +24,10 @@ def make_visual(df):
     'Cuts': []
     })
     
+    num_bars = len(df1.index)
+    plt.figure(figsize=[6, num_bars * 1]) 
+    plt.title('Lumber Cuts')
+
     for index, row in df1.iterrows():
         df.loc[index, 'Lumber'] = str(row['lumber length'])
         df.loc[index, 'Bar_Sizes'] = row['lumber length']
@@ -45,7 +49,6 @@ def make_visual(df):
     
     plt.yticks(df.index, df.index + 1) 
     plt.gca().invert_yaxis() 
-    #plt.show()
     plt.savefig('website/static/visual.png')
     
 def main():
