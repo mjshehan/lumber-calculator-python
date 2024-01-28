@@ -42,7 +42,6 @@ def calculator():
             return render_template("calculator.html", table="", boolean=False)
         else:
             size_1 = int(request.form.get("raw_lumber_length_1"))
-
         size_2_input = request.form.get("raw_lumber_length_2")  
         if size_2_input is None or size_2_input.strip() == "":
             size_2 = 0
@@ -52,9 +51,6 @@ def calculator():
         elif size_2_input.isdigit() == True: 
             size_2 = int(size_2_input)
             
-        #ADD SIZE 3 EXCEPTION HANDLING
-        #size_3 = int(request.form.get("raw_lumber_length_3"))
-        #---- SIZE 3 THROWING ERROR
         size_3_input = request.form.get("raw_lumber_length_3")  
         if size_3_input is None or size_3_input.strip() == "":
             size_3 = 0
@@ -66,15 +62,19 @@ def calculator():
 
 
         piece_list = convert_list((request.form.get("piece_list")).replace(" ", ",").split(","))
-        print("SUBMIT WAS DEPRESSED -- let's cheer it up")
+        print("-----------SUBMIT WAS DEPRESSED -- let's cheer it up")
         print(type(piece_list), piece_list, type(piece_list[0]))
         print(piece_list)
         lumber = [12*size_1, 12*size_2, 12*size_3]
-        
+        for piece in piece_list:
+            if piece > max(size_1*12, size_2*12, size_3*12):
+                flash('One of your cut pieces is too darn big for the lumber sizes', 'error')
+                return render_template("calculator.html", table="", boolean=False)
         solution_df = calculate(lumber, piece_list)
-        print(solution_df)
+
+        print("SOLLLLUTION!!!!!  -----------------> ", solution_df)
         table = solution_df.to_html()
-        make_visual(solution_df)
+        make_visual(solution_df) ####uncoment for VISUALS!
         print("Lumber options = ", lumber, "Piece List = ", piece_list)
         print()
         #---CHECK---convert piece list 

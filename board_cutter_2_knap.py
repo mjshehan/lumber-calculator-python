@@ -21,14 +21,14 @@ def permute_lumber_sizes(lumber, cut_pieces):
 
     test_boards = []
 
-    print(total_linear )
+    print("-------------------TOTAL LINEAR---", total_linear )
     for i in lumber_permutes:
         if sum(i) >= total_linear and sum(i) < total_linear * 1.5:
             test_boards.append(i)
 
     return test_boards
 
-def input_cut_pieces():
+def input_cut_pieces(): #for testing
     return [45, 45, 45, 45, 66, 66, 66, 66, 66, 66, 66, 66, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 12, 11, 55, 29, 50, 49]
 
 def create_data_model(cut_pieces, lumber_sizes):
@@ -155,12 +155,13 @@ def optimize(data, solver):
         
         print("GROUP DF........\n", grouped_df)
         ####################
-
+        print("total value-----------------------> ", total_value)
+        print("lengthe wegiths -------------", len(data["weights"]))
         if total_value == len(data["weights"]):
             
             return grouped_df
         else: 
-            return None
+            return grouped_df
     else:
         print("The problem does not have an optimal solution.")
 
@@ -171,12 +172,26 @@ def calculate(lumber, cut_pieces):
     found_solution = None
 
     for board_permute in test_boards:
-        if found_solution is None:
+        solver = create_solver()
+        data = create_data_model(cut_pieces, board_permute)
+        found_solution = optimize(data, solver)
+        print("---- ------ ----\n", found_solution)
+        print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
+        print("len: ", len(cut_pieces))
+
+        if found_solution is not None and sum(sum(sublist) for sublist in found_solution['cuts']) == sum(cut_pieces):   
+            break
+
+    
+
+
+        
+        """if found_solution is None:
             data = create_data_model(cut_pieces, board_permute)
             solver = create_solver()
             found_solution = optimize(data, solver)
         else:
-            break
+            break"""
 
     #print("solved -------------------------\n", found_solution)
     return found_solution

@@ -42,6 +42,6 @@ def make_visual(df):
         for value in values:
             plt.plot([value, value], [i - relative_height/2, i + relative_height/2], color='blue')
 
-    #plt.savefig('website/static/visual.png')
+    plt.savefig('website/static/visual.png')
 
-    plt.show()
+    
