@@ -28,7 +28,11 @@ def calculator():
 
     def convert_list(list):
         str_list = []
+       
         for entry in list:
+            if entry.isdigit() == False:
+                print("found a bad piece")
+                return False
             if entry != "":
                 str_list.append((entry))
         int_list = []
@@ -64,6 +68,10 @@ def calculator():
 
 
         piece_list = convert_list((request.form.get("piece_list")).replace(" ", ",").split(","))
+        if piece_list == False:
+            flash('You have an invalid value in your list of pieces', 'error')
+            return render_template("calculator.html", table="", boolean=False)
+           
         print("-----------SUBMIT WAS DEPRESSED -- let's cheer it up")
         print(type(piece_list), piece_list, type(piece_list[0]))
         print(piece_list)
