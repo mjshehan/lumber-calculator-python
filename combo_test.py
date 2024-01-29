@@ -4,7 +4,8 @@ import math
 def generate_arrangements(intervals, max_length):
     print("yes")
     # Generate all possible combinations of the intervals
-    for r in range(1, max_length + 1):
+    
+    for r in range(1, max_length * 2):
         for combination in combinations_with_replacement(intervals, r):
             yield combination
 

@@ -151,12 +151,12 @@ def optimize(data, solver):
         print("GROUP DF........\n", grouped_df)
         ####################
         print("total value-----------------------> ", total_value)
-        print("lengthe wegiths -------------", len(data["weights"]))
+        print("pieces needed -------------", len(data["weights"]))
         if total_value == len(data["weights"]):
             
             return grouped_df
         else: 
-            return grouped_df
+            return None
     else:
         print("The problem does not have an optimal solution.")
 
@@ -169,13 +169,17 @@ def calculate(lumber, cut_pieces):
     test_boards = permute_lumber_sizes(lumber, cut_pieces)
     found_solution = None
 
+    permute_count = 0
     for board_permute in test_boards:
+        permute_count += 1
+        print("permute count: ", permute_count)
+        print("total permutes:", len(test_boards))
         iter_time = time.time()
         solver = create_solver()
         solver.SetTimeLimit(3000)
         data = create_data_model(cut_pieces, board_permute)
         found_solution = optimize(data, solver)
-        if found_solution is False:
+        if found_solution is None:
             continue
         
         print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
