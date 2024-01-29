@@ -30,7 +30,7 @@ def calculator():
         str_list = []
        
         for entry in list:
-            if entry.isdigit() == False:
+            if entry.isdigit() == False and entry != " " and entry != "":
                 print("found a bad piece")
                 return False
             if entry != "":

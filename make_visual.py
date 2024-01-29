@@ -21,18 +21,20 @@ def make_visual(df):
     df = pd.DataFrame({
     'Lumber': [],
     'Bar_Sizes': [],
-    'Cuts': []
+    'Cuts': [],
+    'Piece_Sizes': []
     })
     
     num_bars = len(df1.index)
     plt.figure(figsize=[6, num_bars * 1]) 
-    plt.title('Lumber Cuts')
+    plt.title('Cut Diagram')
 
     for index, row in df1.iterrows():
         df.loc[index, 'Lumber'] = str(row['lumber length'])
         df.loc[index, 'Bar_Sizes'] = row['lumber length']
         #df.loc[index, 'Cuts'] = list([5,10,20])
-
+    
+    df['Piece_Sizes'] = [list(x) for x in df1['cuts']]
     df['Cuts'] = df1['cuts'].apply(sum_list)
         #df.iat[index, 2] = row['cuts']
    
@@ -40,15 +42,27 @@ def make_visual(df):
     relative_height = 0.5
 
     #plt.barh(df['Lumber'], df['Bar_Sizes'], height = relative_height, color='gray')
-    plt.barh(df.index, df['Bar_Sizes'], height = relative_height, color='gray')
-
+    plt.barh(df.index, df['Bar_Sizes'], height = relative_height, color='saddlebrown')
+    print("this is the DF you're looking FOR!-----------------\n", df)
     for i, row in df.iterrows():
         values = row['Cuts']
-        for value in values:
-            plt.plot([value, value], [i - relative_height/2, i + relative_height/2], color='blue')
+        pieces = row['Piece_Sizes']
+        start = 0
+        last = 0
+        for j in range(len(values)):
+            plt.plot([values[j], values[j]], [i - relative_height/2, i + relative_height/2], color='black')
+            plt.text(values[j]-(pieces[j])/2-1.75, i, str(pieces[j]), color='black', fontsize=10, fontweight='bold')
+            
+            last = pieces[j]
     
     plt.yticks(df.index, df.index + 1) 
+   
+
     plt.gca().invert_yaxis() 
+
+    #plt.text(5, 0, '10', fontsize=10, color='red')
+    print("values ---------------", values)
+  
     plt.savefig('website/static/visual.png')
     
 def main():
