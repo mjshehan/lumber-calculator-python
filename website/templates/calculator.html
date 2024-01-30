@@ -3,7 +3,7 @@
 {% block content %}
 {{text}}
 {% if table == "" %}
-<form method="POST">
+<form method="POST" onsubmit="return calcLoading()">
     <h3 align="center">The Amazing Lumber Calculator</h3>
     <div class="form-group">
         <p>Enter the length of an available size of raw lumber in feet</p>
@@ -27,6 +27,42 @@
     <br />
     <button type="submit" class="btn btn-primary">Submit</button>    
 </form>
+
+<script>
+
+
+function calcLoading(){
+
+    console.log('myFunction was called');
+    var img = document.createElement("img");
+    img.src="http://127.0.0.1:5000/static/Calculator.gif";
+    img.alt = "My Plot"; 
+
+    img.style.width = "100px";
+    img.style.height = "150px";
+
+    // Create a container for the image
+    var container = document.createElement("div");
+
+    // Set the CSS properties to center the image
+    container.style.display = "flex";
+    container.style.justifyContent = "center";
+    container.style.alignItems = "center";
+    container.style.height = "100vh";
+
+    // Add the image to the container
+    container.appendChild(img);
+
+
+
+    document.body.appendChild(img)
+    return true; // prevent form submission
+
+
+}
+</script>
+
+
 {% else %}
 <p>Good news, we have a solution for you:</p>
 <br />
