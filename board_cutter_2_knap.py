@@ -35,7 +35,7 @@ def input_cut_pieces(): #for testing
 
 def create_data_model(cut_pieces, lumber_sizes):
     print("testing lumber sizes:  ", lumber_sizes)
-    print("linear feet of lumber:  ", sum(lumber_sizes))
+    print("testing linear inches of raw lumber:  ", sum(lumber_sizes))
     data = {}
     data["weights"] = cut_pieces
     print("total linear feet needed: ", sum(data["weights"]))
@@ -93,7 +93,7 @@ def optimize(data, solver):
     print("test line")
     if status is not pywraplp.Solver.OPTIMAL:
         print('here we are baby --------------------')
-        return False
+        return None
     if status == pywraplp.Solver.OPTIMAL:
         print(f"Total packed value: {objective.Value()}")
         total_weight = 0
@@ -182,8 +182,8 @@ def calculate(lumber, cut_pieces):
         if found_solution is None:
             continue
         
-        print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
-        print("len: ", len(cut_pieces))
+        #print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
+        #print("len: ", len(cut_pieces))
         
         if found_solution is not None and sum(sum(sublist) for sublist in found_solution['cuts']) == sum(cut_pieces):   
             break
