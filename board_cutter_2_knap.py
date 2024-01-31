@@ -174,7 +174,7 @@ def calculate(lumber, cut_pieces):
         permute_count += 1
         print("permute count: ", permute_count)
         print("total permutes:", len(test_boards))
-        iter_time = time.time()
+        #iter_time = time.time()
         solver = create_solver()
         solver.SetTimeLimit(3000)
         data = create_data_model(cut_pieces, board_permute)
@@ -189,8 +189,8 @@ def calculate(lumber, cut_pieces):
             break
 
     #print("solved -------------------------\n", found_solution)
-    print("ELAPSED TIME------------------", time.time()-start_time)
-    print("Time for iteration...." , time.time() - iter_time)
+    #print("ELAPSED TIME------------------", time.time()-start_time)
+    #print("Time for iteration...." , time.time() - iter_time)
     return found_solution
 def main():
     
