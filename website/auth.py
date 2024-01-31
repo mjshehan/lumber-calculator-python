@@ -7,9 +7,10 @@ auth = Blueprint('auth', __name__)
 
 """
 """
-@auth.route('/login')
-def login():
-    return "<p>Login</p>"
+@auth.route('/about')
+def about():
+    return render_template("about.html")        
+
     
 @auth.route('/logout')
 def logout():
