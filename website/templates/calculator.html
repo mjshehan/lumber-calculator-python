@@ -3,6 +3,7 @@
 {% block content %}
 {{text}}
 {% if table == "" %}
+<div id="calculatorContainer">
 <form method="POST" onsubmit="return calcLoading()">
     <h3 align="center">The Amazing Lumber Calculator</h3>
     <div class="form-group">
@@ -27,6 +28,7 @@
     <br />
     <button type="submit" class="btn btn-primary">Submit</button>    
 </form>
+</div>
 
 <script>
 
@@ -35,27 +37,31 @@ function calcLoading(){
 
     console.log('myFunction was called');
     var img = document.createElement("img");
-    img.src="http://127.0.0.1:5000/static/Calculator.gif";
-    img.alt = "My Plot"; 
+    var imgCalc = document.createElement('img')
 
-    img.style.width = "100px";
-    img.style.height = "150px";
+    img.src= "{{ url_for('static', filename='rodney.gif') }}"; 
+    img.alt="My Roddney"; 
+    
+
+
+    img.style.width = "200px";
+    img.style.height = "200px";
 
     // Create a container for the image
     var container = document.createElement("div");
 
     // Set the CSS properties to center the image
-    container.style.display = "flex";
-    container.style.justifyContent = "center";
-    container.style.alignItems = "center";
-    container.style.height = "100vh";
+    img.style.position = "absolute";
+    img.style.top = "0";
+    img.style.left = "50%";
+    img.style.transform = "translate(-50%, 150%)";
 
     // Add the image to the container
-    container.appendChild(img);
+    var container = document.getElementById("calculatorContainer");
 
 
 
-    document.body.appendChild(img)
+    container.insertBefore(img, container.firstChild);
     return true; // prevent form submission
 
 
@@ -64,7 +70,8 @@ function calcLoading(){
 
 
 {% else %}
-<p>Good news, we have a solution for you:</p>
+<h3 align="center">The Amazing Lumber Calculator</h3>
+<p>Happy cutting!</p>
 <br />
 
 {{table|safe}}

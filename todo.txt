@@ -1,3 +1,6 @@
-##Add 'loading overlay'
+########### Add 'loading overlay'
+## add board lengths to the end of each bar in plot
 ## fix inputs to allow fractions??
 ## fix output table
+## fix navigation
+## 'about' page
