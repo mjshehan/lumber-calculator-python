@@ -42,15 +42,14 @@ def calculator():
         return int_list
     
     if request.method == 'POST': 
-        #add checks for valid input
-        #flsh messages as needed 
-        if not request.form.get("raw_lumber_length_1").isdigit():
+        if not request.form.get("raw_lumber_length_1").strip().isdigit():
             flash('Please enter a valid number for Size 1', 'error')
             return render_template("calculator.html", table="", boolean=False)
         else:
-            size_1 = int(request.form.get("raw_lumber_length_1"))
-        size_2_input = request.form.get("raw_lumber_length_2")  
-        if size_2_input is None or size_2_input.strip() == "":
+            size_1 = int(request.form.get("raw_lumber_length_1").strip())
+        
+        size_2_input = request.form.get("raw_lumber_length_2").strip()  
+        if size_2_input is None:
             size_2 = 0
         elif size_2_input.isdigit() == False:
             flash('Please enter a valid number for Size 2', 'error')
@@ -58,8 +57,8 @@ def calculator():
         elif size_2_input.isdigit() == True: 
             size_2 = int(size_2_input.strip())
             
-        size_3_input = request.form.get("raw_lumber_length_3")  
-        if size_3_input is None or size_3_input.strip() == "":
+        size_3_input = request.form.get("raw_lumber_length_3") .strip() 
+        if size_3_input is None:
             size_3 = 0
         elif size_3_input.isdigit() == False:
             flash('Please enter a valid number for Size 2', 'error')

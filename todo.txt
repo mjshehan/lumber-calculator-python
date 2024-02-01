@@ -1,11 +1,8 @@
-########### Add 'loading overlay'
-########### add board lengths to the end of each bar in plot
+
 ## need exception handling for small value edge cases
 ## fix inputs to allow fractions??
 ## fix output table
 ## fix navigation
-## known issue - take whitespace out of board-size inputs
 ## Take more than 3 sizes of lumber
 ## calculate in inches / cm 
 ## instructions page
-########## 'about' page
