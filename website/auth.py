@@ -12,9 +12,9 @@ def about():
     return render_template("about.html")        
 
     
-@auth.route('/logout')
-def logout():
-    return "<p>Logout</p>"
+@auth.route('/instructions')
+def Instructions():
+    return render_template("instructions.html", table="", boolean=False)
 
 @auth.route('/calc', methods = ['GET', 'POST'])
 
@@ -56,7 +56,7 @@ def calculator():
             flash('Please enter a valid number for Size 2', 'error')
             return render_template("calculator.html", table="", boolean=False)
         elif size_2_input.isdigit() == True: 
-            size_2 = int(size_2_input)
+            size_2 = int(size_2_input.strip())
             
         size_3_input = request.form.get("raw_lumber_length_3")  
         if size_3_input is None or size_3_input.strip() == "":
@@ -65,7 +65,7 @@ def calculator():
             flash('Please enter a valid number for Size 2', 'error')
             return render_template("calculator.html", table="", boolean=False)
         elif size_3_input.isdigit() == True: 
-            size_3 = int(size_3_input)
+            size_3 = int(size_3_input.strip())
 
 
         piece_list = convert_list((request.form.get("piece_list")).replace(" ", ",").split(","))

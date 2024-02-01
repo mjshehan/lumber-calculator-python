@@ -4,4 +4,8 @@
 ## fix inputs to allow fractions??
 ## fix output table
 ## fix navigation
-## 'about' page
+## known issue - take whitespace out of board-size inputs
+## Take more than 3 sizes of lumber
+## calculate in inches / cm 
+## instructions page
+########## 'about' page
