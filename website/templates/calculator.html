@@ -9,18 +9,19 @@
 <form method="POST" onsubmit="return calcLoading()">
    
   
-    <p>Select unit of measurement for your dimensional lumber:  </p>
+    <!--<p>Select unit of measurement for your dimensional lumber:  </p>-->
+    <p>Enter lengths in feet  (different units currently unavailable): </p>
     <div class="form-check form-check-inline">
       
-        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio1" value="ft" checked>
+        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio1" value="ft" checked disabled>
         <label class="form-check-label" for="inlineRadio1">ft</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio2" value="in">
+        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio2" value="in" disabled>
         <label class="form-check-label" for="inlineRadio2">in</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio3" value="cm">
+        <input class="form-check-input" type="radio" name="unit_input" id="inlineRadio3" value="cm" disabled>
         <label class="form-check-label" for="inlineRadio3">cm</label>
       </div>
       <br>
@@ -40,18 +41,20 @@
     </div>
 
     <br>
-    <p>Select unit of measurement for your CUT pieces:  </p>
+    <!--<p>Select unit of measurement for your CUT pieces:  </p>-->
+    <p>Enter lengths in inches (different units currently unavailable):  </p>
+
     <div class="form-check form-check-inline">
       
-      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio4" value="ft" checked>
+      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio4" value="ft"  disabled> 
       <label class="form-check-label" for="inlineRadio4">ft</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio5" value="in">
+      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio5" value="in" checked disabled>
       <label class="form-check-label" for="inlineRadio5">in</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio6" value="cm">
+      <input class="form-check-input" type="radio" name="cut_unit_input" id="inlineRadio6" value="cm" disabled>
       <label class="form-check-label" for="inlineRadio6">cm</label>
     </div>
     <div class="form-group">

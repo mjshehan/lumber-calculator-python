@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash 
+from flask import Blueprint, render_template, request, flash, redirect 
 from board_cutter_2_knap import calculate
 from make_visual import make_visual
 import matplotlib.pyplot as pltp
@@ -7,6 +7,10 @@ auth = Blueprint('auth', __name__)
 
 """
 """
+@auth.route('/')
+def home():
+    return redirect('/calc', code=302)
+
 @auth.route('/about')
 def about():
     return render_template("about.html")        
@@ -24,9 +28,7 @@ def calculator():
     text = "Welcome!"
     text2 = ""
     text3 = ""
-    def hello():
-        print("hello world")
-
+    
     def convert_list(list):
         str_list = []
        
@@ -87,9 +89,6 @@ def calculator():
             flash('You have an invalid value in your list of pieces', 'error')
             return render_template("calculator.html", table="", boolean=False)
            
-        print("-----------SUBMIT WAS DEPRESSED -- let's cheer it up")
-        print(type(piece_list), piece_list, type(piece_list[0]))
-        print(piece_list)
         lumber = [12*size_1, 12*size_2, 12*size_3]
         for piece in piece_list:
             if piece > max(size_1*12, size_2*12, size_3*12):
@@ -97,23 +96,14 @@ def calculator():
                 return render_template("calculator.html", table="", boolean=False)
         solution_df = calculate(lumber, piece_list)
 
-        print("SOLLLLUTION!!!!!  -----------------> ", solution_df)
+   
         table = solution_df.to_html()
         total_waste = sum(solution_df['waste'])
         total_needed = sum(piece_list)
         text2 = f"Total Waste = " + str(total_waste) + " inches" 
         text3 = f"Percent Waste = " + str(round(total_waste/total_needed*100, 2)) + "%"
-        print(text2, "<------------------------------")
-        make_visual(solution_df) ####uncoment for VISUALS!
-        print("Lumber options = ", lumber, "Piece List = ", piece_list)
-        print()
-        #---CHECK---convert piece list 
-        #---CHECK---call board_cutter_2_knap.py
-        #store data
-        #render template with data...
-        #grouped_df = pd.DataFrame(solution_df.groupby(["bin"]))
-        #print(grouped_df)
-  
+   
+        make_visual(solution_df) 
       
     else:
         table = ""

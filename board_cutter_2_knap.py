@@ -23,7 +23,6 @@ def permute_lumber_sizes(lumber, cut_pieces):
 
     test_boards = []
 
-    print("-------------------TOTAL LINEAR---", total_linear )
     for i in lumber_permutes:
         if sum(i) >= total_linear and sum(i) < total_linear * 1.5:
             test_boards.append(i)
@@ -34,27 +33,18 @@ def input_cut_pieces(): #for testing
     return [45, 45, 45, 45, 66, 66, 66, 66, 66, 66, 66, 66, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 12, 11, 55, 29, 50, 49]
 
 def create_data_model(cut_pieces, lumber_sizes):
-    print("testing lumber sizes:  ", lumber_sizes)
-    print("testing linear inches of raw lumber:  ", sum(lumber_sizes))
     data = {}
     data["weights"] = cut_pieces
-    print("total linear feet needed: ", sum(data["weights"]))
-    print("total boards needed: ", len(data["weights"]))
     data["values"] = len(data["weights"]) * [1]
     assert len(data["weights"]) == len(data["values"])
     data["num_items"] = len(data["weights"])
     data["all_items"] = range(data["num_items"])
-
-    """figure out the total linear feet of lumber required -- then figure out how many boards of each size are needed... start trying the problem until we pack a value of sum(data["values"]) into the bins])"""
-
     data["bin_capacities"] = lumber_sizes
     data["num_bins"] = len(data["bin_capacities"])
     data["all_bins"] = range(data["num_bins"])
-
-    # Create the mip solver with the SCIP backend.
-    
     return data
 
+#create the MIP solver     
 def create_solver():
     solver = pywraplp.Solver.CreateSolver("SCIP")
     if solver is None:
@@ -62,6 +52,7 @@ def create_solver():
         return solver
     return solver
 
+#solver the MIP problem
 def optimize(data, solver):
     x = {}
     for i in data["all_items"]:
@@ -80,31 +71,23 @@ def optimize(data, solver):
             <= data["bin_capacities"][b]
         )
 
-    # Objective.
-    # Maximize total value of packed items.
+    # Objective: Maximize total value of packed items.
     objective = solver.Objective()
     for i in data["all_items"]:
         for b in data["all_bins"]:
             objective.SetCoefficient(x[i, b], data["values"][i])
     objective.SetMaximization()
 
-    print(f"Solving with {solver.SolverVersion()}")
+    #print(f"Solving with {solver.SolverVersion()}") #print the solver version
     status = solver.Solve()
-    print("test line")
     if status is not pywraplp.Solver.OPTIMAL:
-        print('here we are baby --------------------')
         return None
     if status == pywraplp.Solver.OPTIMAL:
-        print(f"Total packed value: {objective.Value()}")
         total_weight = 0
         total_value = 0
-
         df = pd.DataFrame(columns=['bin', 'capacity', 'cut'])
 
-        cuts = []
-       
         for b in data["all_bins"]:
-            print(f"Lumber {b} capacity: {data['bin_capacities'][b]}")
             bin_weight = 0
             bin_value = 0
             for i in data["all_items"]:
@@ -114,25 +97,14 @@ def optimize(data, solver):
                     df = pd.concat([df, new_df], ignore_index=True)
                     bin_weight += data["weights"][i]
                     bin_value += data["values"][i]
-            print(f"Packed bin weight: {bin_weight}")
-            print(f"Packed bin value: {bin_value}\n")
             total_weight += bin_weight
             total_value += bin_value
-        print(f"Total packed weight: {total_weight}")
-        print(f"Total value: {total_value}")
-        #print("here is the df----------------------->>>>>>>>>>>> ", df)
-        
-        
-        ####################
+
+        #create a new dataframe to group results for output
         grouped_df = df.groupby('bin').agg(
             {'capacity': 'first',  # get the first capacity value in each group
              'cut': ['sum', list]  # sum the cut values in each group
             }).reset_index()
-
-        # calculate the waste for each bin
-        #grouped_df['waste'] = grouped_df['capacity'] - grouped_df['cut']
-        
-        # rename the 'cut' column to 'total_used'
         grouped_df.columns = grouped_df.columns.get_level_values(0)
         grouped_df.columns.values[0] = 'bin'
         grouped_df.columns.values[0] = 'bin'
@@ -140,20 +112,9 @@ def optimize(data, solver):
         grouped_df.columns.values[2] = 'inches used'
         grouped_df.columns.values[3] = 'cuts'
         grouped_df['waste'] = grouped_df['lumber length'] - grouped_df['inches used']
-
-
-
-
-        #grouped_df.rename(columns={'capacity': 'BOARD LENGTH', 'sum': 'USED', 'cut': 'CUT LIST'}, inplace=True)
         
-        
-        
-        print("GROUP DF........\n", grouped_df)
-        ####################
-        print("total value-----------------------> ", total_value)
-        print("pieces needed -------------", len(data["weights"]))
-        if total_value == len(data["weights"]):
-            
+        #Return the grouped dataframe if we have packed all the items i.e. all cuts are accounted for
+        if total_value == len(data["weights"]):    
             return grouped_df
         else: 
             return None
@@ -161,42 +122,44 @@ def optimize(data, solver):
         print("The problem does not have an optimal solution.")
 
 
+#calculator function to call the solver
 def calculate(lumber, cut_pieces):
-
     start_time = time.time() 
-    timeout = 3 
-
     test_boards = permute_lumber_sizes(lumber, cut_pieces)
     found_solution = None
 
     permute_count = 0
+
+    #Iterate over possible lumber combinations, calling solver on each one
     for board_permute in test_boards:
         permute_count += 1
-        print("permute count: ", permute_count)
-        print("total permutes:", len(test_boards))
-        #iter_time = time.time()
+        print("permute count: ", permute_count, "/", len(test_boards))
+        iter_time = time.time()
         solver = create_solver()
         solver.SetTimeLimit(3000)
         data = create_data_model(cut_pieces, board_permute)
         found_solution = optimize(data, solver)
+
+        #Continue to the next iteration if no solution is found
         if found_solution is None:
-            continue
-        
-        #print("sum: ", sum(sum(sublist) for sublist in found_solution['cuts']))
-        #print("len: ", len(cut_pieces))
-        
+            continue                 
+        #Break if a solution is found and all cuts are accounted for
         if found_solution is not None and sum(sum(sublist) for sublist in found_solution['cuts']) == sum(cut_pieces):   
             break
 
-    #print("solved -------------------------\n", found_solution)
-    #print("ELAPSED TIME------------------", time.time()-start_time)
-    #print("Time for iteration...." , time.time() - iter_time)
+    print("SOLUTION FOUND on permute #: ", permute_count)
+    print("total elapsed time..........", time.time()-start_time)
+    print("Time for final iteration...." , time.time() - iter_time)
+    print("total cut pieces: " , len(cut_pieces))
+    print("number of raw boards: ", len(found_solution))
     return found_solution
+
+#Main program for testing
 def main():
-    
-    lumber = input_board_sizes()  
-    cut_pieces = input_cut_pieces()
-    test_boards = permute_lumber_sizes(cut_pieces)
+
+    lumber = [] #enter values for testing    
+    cut_pieces = [[]] #enter values for testing
+    test_boards = permute_lumber_sizes(lumber)
 
     found_solution = None
 
@@ -209,12 +172,6 @@ def main():
             break
     
     print(found_solution)
-
-
-    # Variables.
-    # x[i, b] = 1 if item i is packed in bin b.
-    
-
 
 if __name__ == "__main__":
     main()

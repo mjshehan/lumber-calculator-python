@@ -1,19 +1,17 @@
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt  # Uncommented this line
-
 import pandas as pd
-#add test
-
 
 def sum_list(ls):
     sum = 0
     for i in range(len(ls)):
         ls[i] = ls[i] + sum
         sum = ls[i]
-
     return(ls)
 
+
+#Creates the cut diagram using matplotlib
 def make_visual(df):
     plt.clf()
     
@@ -40,7 +38,7 @@ def make_visual(df):
     relative_height = 0.5
 
     plt.barh(df.index, df['Bar_Sizes'], height = relative_height, color='Peru')
-    print("this is the DF you're looking FOR!-----------------\n", df)
+   
     for i, row in df.iterrows():
         values = row['Cuts']
         pieces = row['Piece_Sizes']
@@ -49,23 +47,14 @@ def make_visual(df):
             plt.plot([values[j], values[j]], [i - relative_height/2, i + relative_height/2], color='black')
             plt.text(values[j]-(pieces[j])/2-1.75, i, str(pieces[j]), color='black', fontsize=10, fontweight='bold')
             plt.text(int(df['Bar_Sizes'][i]) + 1, i, str(int(df['Bar_Sizes'][i]) // 12) + " ft", color = "black", fontsize=10 )
-            
-            last = pieces[j]
-    
+                
     plt.yticks(df.index, df.index + 1) 
     plt.xticks([])
-   
-
     plt.gca().invert_yaxis() 
-
-    #plt.text(5, 0, '10', fontsize=10, color='red')
-    print("values ---------------", values)
-  
     plt.savefig('website/static/visual.png')
     
 def main():
    
-
     test_df = pd.DataFrame({
     'Lumber': [str(1), str(2), str(3), str(4), str(5), str(6), str(7), str(8)],
     'lumber length': [120, 120, 120, 96, 96, 96, 96, 96],

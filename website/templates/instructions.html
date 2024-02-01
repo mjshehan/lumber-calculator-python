@@ -1,12 +1,31 @@
 {% extends "base.html" %}
 {% block title %}About{% endblock %}
 {% block content %}
-    <h1>Instructions</h1>
+<h2 align="center">Instructions</h2>
     <p>1. Enter the dimensions of the lumber you need to cut.</p>
+    <ol>
+        <li>Enter the <strong>available lengths</strong> of a particular width/thickness of dimensional lumber using <strong>whole numbers (no fractions or decimals) </strong>.
+        <br>Note, this is a linear calculator.  You will need to run it once for each different width / thickness.
+    <br> For example if you need pieces with dimension 2x8, 2x4, 1x6, and 1x1 (of some lengths), run the calculator once for your 2x8 pieces, once for your 2x4's etc.   </li>
+    <br>    
+    <li>Enter the <strong> lengths of each piece </strong> for that thickness, using <strong>whole numbers</strong>.  
+        Use commas or spaces to separate the values.  
+        For example, if you need 6 pieces of 2x4 lumber, 2 pieces at 94 inchesand 4 piece at 35 inches, 
+        you would enter <94 94 35 35 35 35></94> or <94, 94, 35, 35, 35>  </li>
+    <br></li>
+    <br>
+    <li>Submit -- depending on the length of your list of cut pieces, the program can take a few seconds or a few minutes to complete.  Do not navigate away from the page</li>
+</ol>
+<br>
+
+<p>Your output should resemble the diagram below:</p>
+<img src="{{ url_for('static', filename='instruct_example.png') }}" alt="Output">
 
 
-    <h3>Limitations</h3>
-    <p> Currently you must run the calculator once for every diferent width of lumber you are using.</p>
-    <p> For instance, if your project required cuts from 2x8, 2x4, and 1x1, you would need to run the calculator once for each width/thickness.</p>
-    
+    <h4 align = "center">Limitations</h4>
+    <ul>
+        <li> Currently must run the calculator once for every diferent width of lumber you are using.</li>
+        <li> Currently do not have support for decimal / fraction inputs</li>
+        <li> Lists of extremely small values do not compute (for example, one cut of 2 inches form an 8ft board)</li>
+    </ul>
 {% endblock %}

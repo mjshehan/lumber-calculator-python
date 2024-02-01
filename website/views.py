@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect
 
 views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    return render_template("home.html")
+    return redirect("/calc", code=302)
 
