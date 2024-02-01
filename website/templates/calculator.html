@@ -3,29 +3,63 @@
 {% block content %}
 {{text}}
 {% if table == "" %}
+<h2 align="center">The Amazing Lumber Calculator</h2>
+
 <div id="calculatorContainer">
 <form method="POST" onsubmit="return calcLoading()">
-    <h3 align="center">The Amazing Lumber Calculator</h3>
-    <div class="form-group">
-        <p>Enter the length of an available size of raw lumber in feet</p>
-        <input type="text" name="raw_lumber_length_1" id="raw_lumber_length_1" placeholder="eg 12 feet" />
+   
+  
+    <p>Select unit of measurement for your dimensional lumber:  </p>
+    <div class="form-check form-check-inline">
+      
+        <input class="form-check-input" type="radio" name="raw_ft" id="inlineRadio1" value="option1" checked>
+        <label class="form-check-label" for="inlineRadio1">ft</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="raw_in" id="inlineRadio2" value="option2">
+        <label class="form-check-label" for="inlineRadio2">in</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="raw_cm" id="inlineRadio3" value="option3">
+        <label class="form-check-label" for="inlineRadio3">cm</label>
+      </div>
+      <br>
+      <br>
+      <p>Enter an available lumber size</p>
+        <input type="text" name="raw_lumber_length_1" id="raw_lumber_length_1" placeholder=" required" style = "width: 10%;"/>
     </div>
     <div class="form-group">
         <br>
-        <p>Enter a second available lumber size</p>
-        <input type="text" name="raw_lumber_length_2" id="raw_lumber_length_2" placeholder="eg 10 feet" />
+        <p>Enter a second lumber size if available</p>
+        <input type="text" name="raw_lumber_length_2" id="raw_lumber_length_2" placeholder=" optional" style = "width: 10%;"/>
     </div>
     <div class="form-group">
         <br>
-        <p>Enter a third available lumber size</p>
-        <input type="text" name="raw_lumber_length_3" id="raw_lumber_length_3" placeholder="eg 8 feet" />
+        <p>Enter a third lumber size if available</p>
+        <input type="text" name="raw_lumber_length_3" id="raw_lumber_length_3" placeholder=" optional" style = "width: 10%;"/>
     </div>
+
+    <br>
+    <p>Select unit of measurement for your CUT pieces:  </p>
+    <div class="form-check form-check-inline">
+      
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cut_ft" value="cut_ft" checked>
+        <label class="form-check-label" for="inlineRadio1a">ft</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cut_in" value="cut_in">
+        <label class="form-check-label" for="inlineRadio2b">in</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="cut_cm" value="cut_cm">
+        <label class="form-check-label" for="inlineRadio3c">cm</label>
+      </div>
     <div class="form-group">
         <br>
-        <p>Enter the size of each CUT PIECE required in inches (separate lengths by a space or comma) </p>
-        <input type="text" name="piece_list" id="piece_list" placeholder="separate values by comma ," />
+        <p>Enter the size of each cut piece required:</p>
+        <input type="text" name="piece_list" id="piece_list" placeholder=" use commas or spaces to seperate values" style = "width: 70%;"/>
     </div>
-    <br />
+    <br>
     <button type="submit" class="btn btn-primary">Submit</button>    
 </form>
 </div>
@@ -39,12 +73,12 @@ function calcLoading(){
     var img = document.createElement("img");
     var imgCalc = document.createElement('img')
 
-    img.src= "{{ url_for('static', filename='rodney.gif') }}"; 
-    img.alt="My Roddney"; 
+    img.src= "{{ url_for('static', filename='Calculator.gif') }}"; 
+    img.alt="Please Wait... Calculating..."; 
     
 
 
-    img.style.width = "200px";
+    img.style.width = "150px";
     img.style.height = "200px";
 
     // Create a container for the image
@@ -70,17 +104,15 @@ function calcLoading(){
 
 
 {% else %}
-<h3 align="center">The Amazing Lumber Calculator</h3>
 <p>Happy cutting!</p>
-<br />
-
+<img src="{{ url_for('static', filename='visual.png') }}" alt="My Plot"> 
+<br>
 {{table|safe}}
 <br />
 {{text2}}
 <br />
 {{text3}}
 <br />
-<img src="{{ url_for('static', filename='visual.png') }}" alt="My Plot"> 
 <br />
 <a href="" class="btn btn-info">Reset</a> 
 {% endif %}
