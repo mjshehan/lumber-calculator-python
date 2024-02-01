@@ -42,6 +42,21 @@ def calculator():
         return int_list
     
     if request.method == 'POST': 
+
+        
+        raw_units = request.form.get("unit_input")
+        cut_units = request.form.get("cut_unit_input")
+       
+        #conversion factor -- use inches as base unit
+        # if raw_units == inches then do nothing
+        # if raw units == feet then multiply by 12
+        # if raw units = cm then multiply by 0.393701
+
+        #transform INPUT
+
+        #inverse transform OUTPUT
+
+
         if not request.form.get("raw_lumber_length_1").strip().isdigit():
             flash('Please enter a valid number for Size 1', 'error')
             return render_template("calculator.html", table="", boolean=False)
@@ -49,16 +64,16 @@ def calculator():
             size_1 = int(request.form.get("raw_lumber_length_1").strip())
         
         size_2_input = request.form.get("raw_lumber_length_2").strip()  
-        if size_2_input is None:
+        if size_2_input is None or size_2_input == "":
             size_2 = 0
-        elif size_2_input.isdigit() == False:
+        elif size_2_input.isdigit() == False :
             flash('Please enter a valid number for Size 2', 'error')
             return render_template("calculator.html", table="", boolean=False)
         elif size_2_input.isdigit() == True: 
             size_2 = int(size_2_input.strip())
             
         size_3_input = request.form.get("raw_lumber_length_3") .strip() 
-        if size_3_input is None:
+        if size_3_input is None or size_2_input == "":
             size_3 = 0
         elif size_3_input.isdigit() == False:
             flash('Please enter a valid number for Size 2', 'error')
