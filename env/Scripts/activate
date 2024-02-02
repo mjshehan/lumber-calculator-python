@@ -35,7 +35,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\mike_\OneDrive\Project-repositories\lumber-calculator-python\env"
+VIRTUAL_ENV="C:\Users\mike_\Documents\Project-repositories\lumber-calculator-python\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

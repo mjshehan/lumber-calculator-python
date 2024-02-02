@@ -1,8 +1,9 @@
 from flask import Flask 
+import os
 
 def create_app():
     app = Flask(__name__) #represents name of the file
-    app.config['SECRET_KEY'] = 'abc'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
     from .views import views
     from .auth import auth
