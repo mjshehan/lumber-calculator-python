@@ -77,7 +77,7 @@ def calculator():
         size_3_input = request.form.get("raw_lumber_length_3") .strip() ##
         if size_3_input is None or size_3_input == "":
             size_3 = 0
-        elif size_3_input.isdigit() == False or size_3_input.isdigit == False:
+        elif size_3_input.isdigit() == False:
             flash('Please enter a valid number for Size 3', 'error')
             return render_template("calculator.html", table="", boolean=False)
         elif size_3_input.isdigit() == True: 
