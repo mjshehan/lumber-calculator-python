@@ -45,7 +45,6 @@ def calculator():
     
     if request.method == 'POST': 
 
-        
         raw_units = request.form.get("unit_input")
         cut_units = request.form.get("cut_unit_input")
        
@@ -96,8 +95,22 @@ def calculator():
                 return render_template("calculator.html", table="", boolean=False)
         solution_df = calculate(lumber, piece_list)
 
-   
-        table = solution_df.to_html()
+        curated_df = solution_df[['lumber length', 'cuts', 'inches used', 'waste' ]]
+
+        print(curated_df.columns)
+        for index, row in curated_df.iterrows():
+            curated_df.loc[index, 'lumber length'] = int(row['lumber length'])//12
+            curated_df.loc[index, 'cuts'] = ', '.join(map(str, row['cuts']))
+        raw_units = "ft"
+        cut_units = "in"
+        cut_title = "Inches"
+        curated_df.rename(columns={'lumber length': f'Lumber Length ({raw_units})'}, inplace=True)
+        curated_df.rename(columns={'cuts': f'Cuts ({cut_units})'}, inplace=True)
+        curated_df.rename(columns={'inches used': f'{cut_title} Used'}, inplace=True)
+        curated_df.rename(columns={'waste': f'Waste ({cut_units})'}, inplace=True)
+        curated_df.insert(0, '#', range(1, len(curated_df)+1))
+        table = curated_df.to_html(classes='table table-striped',
+                                   index=False)
         total_waste = sum(solution_df['waste'])
         total_needed = sum(piece_list)
         text2 = f"Total Waste = " + str(total_waste) + " inches" 

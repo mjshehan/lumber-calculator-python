@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Calcualtor{% endblock %}
 {% block content %}
+<style>
+  .table th, .table td {
+      text-align: center;
+  }
+</style>
 {{text}}
 {% if table == "" %}
 <h2 align="center">The Amazing Lumber Calculator</h2>
@@ -107,7 +112,6 @@ function calcLoading(){
 
 
 {% else %}
-<p>Happy cutting!</p>
 <img src="{{ url_for('static', filename='visual.png') }}" alt="My Plot"> 
 <br>
 {{table|safe}}
