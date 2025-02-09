@@ -1,4 +1,12 @@
 .venv
 .env 
+<<<<<<< HEAD
 __pycache__
 Dockerfile
+=======
+.todo.txt
+__pycache__
+
+Dockerfile
+website/__pycache__
+>>>>>>> development

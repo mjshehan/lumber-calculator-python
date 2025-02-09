@@ -1,9 +1,0 @@
-
-## need exception handling for small value edge cases
-## fix inputs to allow fractions??
-## fix output table
-## fix navigation
-## Take more than 3 sizes of lumber
-## calculate in inches / cm 
-## instructions page
-111
